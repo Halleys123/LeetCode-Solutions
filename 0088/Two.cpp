@@ -15,6 +15,10 @@ void merge(vector<int> &nums1, int m, vector<int> &nums2, int n)
             nums1.pop_back();
             j++;
         }
+        else if (temp <= nums2[j])
+        {
+            i++;
+        }
     }
     while (j < n)
     {

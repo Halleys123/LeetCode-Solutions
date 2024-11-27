@@ -84,4 +84,31 @@ To search for problems based on tags in Visual Studio Code:
 3. In the search bar, type the tag you want to search for (e.g., Dynamic Programming).
 4. VSCode will display all the files containing the specified tag, allowing you to quickly locate relevant problems and solutions.
 
-This structure and tagging system will help you efficiently navigate and utilize the repository for studying and solving Leetcode problems.
+## directory.js
+
+The `directory.js` script automates the creation of problem folders and solution files. It can create folders and files for specified problems and languages, and optionally remove existing folders or refactor them.
+
+### Usage
+
+To run the script, use the following command:
+
+```bash
+node directory.js PROBLEM=0036 SOLUTIONS=5 LANGUAGES=.py,.cpp
+```
+
+This command will create a folder for problem 0036 with 5 solution files in Python and C++, removing any existing folder with the same name.
+
+Fetching Problem Statements
+The script also fetches the problem statement from Leetcode and saves it in a README.md file inside the problem folder.
+
+```bash
+node directory.js PROBLEM=0036 SOLUTIONS=5 LANGUAGES=.py,.cpp
+```
+
+This command will create the folder and files, and fetch the problem statement from Leetcode.
+
+```bash
+node directory.js PROBLEM=0036 SOLUTIONS=5 LANGUAGES=.py,.cpp REFACTOR=true
+```
+
+This command will refactor the existing folder structure (currently under development).
