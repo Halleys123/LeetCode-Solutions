@@ -24,6 +24,28 @@ Leetcode/
 │ └── two.cpp
 README.md
 
+## Makefile
+
+The repository includes a `Makefile` that simplifies the process of compiling and running the C++ files. You can compile and run a specific solution file using the following commands:
+
+```bash
+make run PROBLEM=1143 SOLUTION=one
+```
+
+Above command will compile and run the `one.cpp` file inside the `1143 Largest Common Substring` folder. You can replace the `PROBLEM` and `SOLUTION` variables with the desired problem number and solution file name.
+
+```bash
+make run PROBLEM=1143
+```
+
+Above command will compile and run all the solution files inside the `1143 Largest Common Substring` folder.
+
+```bash
+make clean
+```
+
+Above command will remove all the compiled files from the repository.
+
 ## README Files
 
 The `README.md` file inside each problem folder follows a consistent structure:
