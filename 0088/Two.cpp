@@ -5,30 +5,24 @@ using namespace std;
 
 void merge(vector<int> &nums1, int m, vector<int> &nums2, int n)
 {
-    if (!n)
-        return;
-    if (!m)
-    {
-        nums1 = nums2;
-        return;
-    }
-
-    vector<int> ans;
     int i = 0, j = 0;
-
     while (i < m && j < n)
     {
-        if (nums1[i] < nums2[j])
-            ans.push_back(nums1[i++]);
-        else
-            ans.push_back(nums2[j++]);
+        int temp = nums1[i];
+        if (temp > nums2[j])
+        {
+            nums1.insert(nums1.begin() + i, nums2[j]);
+            nums1.pop_back();
+            j++;
+        }
     }
-    while (i < m)
-        ans.push_back(nums1[i++]);
     while (j < n)
-        ans.push_back(nums2[j++]);
-
-    nums1 = ans;
+    {
+        nums1.insert(nums1.begin() + i, nums2[j]);
+        nums1.pop_back();
+        i++;
+        j++;
+    }
 }
 
 int main()
