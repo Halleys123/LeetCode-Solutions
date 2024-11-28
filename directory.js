@@ -84,13 +84,19 @@ if (!fs.existsSync(folderPath)) {
     return;
   }
 }
-
 // if only one language is given, create files with that language directly in problem folder
 // else create a folder for each language and create files in that folder
+function returnNum(i) {
+  return count
+    .toWords(i)
+    .split(" ")
+    .map((item) => item.charAt(0).toUpperCase() + item.slice(1))
+    .join("");
+}
 try {
   if (extensions.length === 1) {
     for (let i = 1; i <= solutions; i++) {
-      const fileName = `${problem}_${i}${extensions[0]}`;
+      const fileName = `${returnNum(i)}${extensions[0]}`;
       const filePath = path.join(folderPath, fileName);
       fs.writeFileSync(filePath, "");
     }
@@ -103,12 +109,8 @@ try {
         }
         for (let i = 1; i <= solutions; i++) {
           // to camel
-          const num = count
-            .toWords(i + 1)
-            .split(" ")
-            .map((item) => item.charAt(0).toUpperCase() + item.slice(1))
-            .join("");
-          const fileName = `${num}.${lang.extension}`;
+          console.log(num);
+          const fileName = `${returnNum(i)}.${lang.extension}`;
           const filePath = path.join(langFolder, fileName);
           fs.writeFileSync(filePath, "");
         }
