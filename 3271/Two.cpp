@@ -1,3 +1,6 @@
+// gcc optimize
+#pragma GCC optimize("O3")
+
 #include <string>
 #include <iostream>
 

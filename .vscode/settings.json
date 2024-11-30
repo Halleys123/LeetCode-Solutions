@@ -2,6 +2,7 @@
   "files.associations": {
     "*.json": "json",
     "vector": "cpp",
-    "utility": "cpp"
+    "utility": "cpp",
+    "xstring": "cpp"
   }
 }
