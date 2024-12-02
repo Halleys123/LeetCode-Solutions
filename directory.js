@@ -109,7 +109,7 @@ try {
         }
         for (let i = 1; i <= solutions; i++) {
           // to camel
-          const fileName = `${returnNum(i)}.${lang.extension}`;
+          const fileName = `${returnNum(i)}${lang.extension}`;
           const filePath = path.join(langFolder, fileName);
           fs.writeFileSync(filePath, "");
         }
