@@ -3,7 +3,7 @@ name: Create Issue for Missing Problem Statements
 on:
   push:
     paths:
-      - '**/README.md'
+      - "**/README.md"
 
 permissions:
   contents: read
@@ -29,31 +29,31 @@ jobs:
 
           echo "::set-output name=missing_folders::$missing_statements"
 
-      - name: Create GitHub issue if needed
+      - name: Create GitHub issues if needed
         uses: actions/github-script@v6
         if: steps.find_readme.outputs.missing_folders != ''
         with:
           script: |
             const missingFolders = `"${{ steps.find_readme.outputs.missing_folders }}"`.trim().split("\n");
 
-            const issueBody = missingFolders.map(folder => `- [ ] Update README in \`${folder}\``).join("\n");
-
-            const issueTitle = "Update Documentation for Problem Statements";
-            const issues = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: "open",
-              labels: ["documentation"]
-            });
-
-            if (!issues.data.some(issue => issue.title === issueTitle)) {
-              await github.rest.issues.create({
+            for (const folder of missingFolders) {
+              const issueTitle = `Update Documentation for Problem Statement in ${folder}`;
+              const issues = await github.rest.issues.listForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                title: issueTitle,
-                body: issueBody,
+                state: "open",
                 labels: ["documentation"]
               });
-            } else {
-              console.log("Issue already exists.");
+
+              if (!issues.data.some(issue => issue.title === issueTitle)) {
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: issueTitle,
+                  body: `- [ ] Update README in \`${folder}\``,
+                  labels: ["documentation"]
+                });
+              } else {
+                console.log(`Issue already exists for ${folder}.`);
+              }
             }
