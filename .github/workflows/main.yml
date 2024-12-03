@@ -27,7 +27,7 @@ jobs:
             fi
           done < <(find . -type f -name "README.md" -print0)
 
-          echo "::set-output name=missing_folders::$missing_statements"
+          echo "::set-output name=missing_folders::${missing_statements%\\n}"
 
       - name: Create GitHub issues if needed
         uses: actions/github-script@v6
