@@ -1,0 +1,55 @@
+name: Create Issue for Missing Problem Statements
+
+on:
+  push:
+    paths:
+      - '**/README.md'
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Find problematic README files
+        id: find_readme
+        run: |
+          missing_statements=""
+          while IFS= read -r -d $'\0' file; do
+            if grep -q "Problem statement not found." "$file"; then
+              missing_statements+="$(dirname "$file")\n"
+            fi
+          done < <(find . -type f -name "README.md" -print0)
+
+          echo "::set-output name=missing_folders::$missing_statements"
+
+      - name: Create GitHub issue if needed
+        uses: actions/github-script@v6
+        if: steps.find_readme.outputs.missing_folders != ''
+        with:
+          script: |
+            const missingFolders = `"${{ steps.find_readme.outputs.missing_folders }}"`.trim().split("\n");
+
+            const issueBody = missingFolders.map(folder => `- [ ] Update README in \`${folder}\``).join("\n");
+
+            const issueTitle = "Update Documentation for Problem Statements";
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              labels: ["documentation"]
+            });
+
+            if (!issues.data.some(issue => issue.title === issueTitle)) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: issueTitle,
+                body: issueBody,
+                labels: ["documentation"]
+              });
+            } else {
+              console.log("Issue already exists.");
+            }
