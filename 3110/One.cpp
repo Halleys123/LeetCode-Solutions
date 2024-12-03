@@ -17,6 +17,7 @@ int scoreOfString(string s)
 
 int main()
 {
+
     string s;
     cin >> s;
     cout << scoreOfString(s) << endl;
