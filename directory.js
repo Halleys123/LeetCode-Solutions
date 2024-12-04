@@ -27,6 +27,10 @@ const languages = [
     name: "C",
     extension: ".c",
   },
+  {
+    name: "SQL",
+    extension: ".sql",
+  },
 ];
 
 let error = false;
