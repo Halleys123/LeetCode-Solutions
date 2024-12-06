@@ -1,4 +1,4 @@
-// Single Loop
+// Sorting the array nlogn
 
 #include <iostream>
 #include <vector>
