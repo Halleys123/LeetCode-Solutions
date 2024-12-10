@@ -44,12 +44,54 @@ const problem = args[0].split("=")[1];
 const solutions = args[1].split("=")[1];
 const extensions = args[2].split("=")[1].split(",");
 const remove = args[3] ? args[3].split("=")[1] : false;
-const refactor = args[4] ? args[4].split("=")[1] : false;
+const refactor = args[4] ? args[4].split("=")[1] === "true" : false;
 
 if (refactor) {
-  console.log("Under Development");
+  if (!fs.existsSync(folderPath)) {
+    console.log(
+      "Problem folder does not exist. Continuing the process like normal."
+    );
+  } else {
+    const files = fs.readdirSync(folderPath);
+    const programmingFiles = files.filter((file) =>
+      validExtensions.includes(path.extname(file))
+    );
+    const subFolders = files.filter((file) =>
+      fs.lstatSync(path.join(folderPath, file)).isDirectory()
+    );
+
+    if (programmingFiles.length > 0 && subFolders.length === 0) {
+      const fileExtension = path.extname(programmingFiles[0]);
+      const language = languages.find(
+        (lang) => lang.extension === fileExtension
+      );
+      const langFolder = path.join(folderPath, language.name);
+      if (!fs.existsSync(langFolder)) {
+        fs.mkdirSync(langFolder);
+      }
+      programmingFiles.forEach((file) => {
+        const oldPath = path.join(folderPath, file);
+        const newPath = path.join(langFolder, file);
+        fs.renameSync(oldPath, newPath);
+      });
+    } else if (subFolders.length > 0) {
+      extensions.forEach((extension) => {
+        const language = languages.find((lang) => lang.extension === extension);
+        const langFolder = path.join(folderPath, language.name);
+        if (!fs.existsSync(langFolder)) {
+          fs.mkdirSync(langFolder);
+        }
+        for (let i = 1; i <= solutions; i++) {
+          const fileName = `${returnNum(i)}${extension}`;
+          const filePath = path.join(langFolder, fileName);
+          fs.writeFileSync(filePath, "");
+        }
+      });
+    }
+  }
   process.exit(0);
 }
+
 if (!/^[0-9]{4}$/.test(problem)) {
   console.log("Invalid problem number");
   error = true;
