@@ -1,5 +1,9 @@
 #include <vector>
 #include <queue>
+#include <iostream>
+#include <string>
+
+using namespace std;
 
 class Solution
 {
