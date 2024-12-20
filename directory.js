@@ -1,35 +1,35 @@
 // Sample command
 //node .\directory.js PROBLEM=0036 SOLUTIONS=5 LANGUAGES=.py,.cpp REMOVE=true REFACTOR=true
-const path = require("path");
-const fs = require("fs");
-const count = require("number-to-words");
-const axios = require("axios");
-const cheerio = require("cheerio");
+const path = require('path');
+const fs = require('fs');
+const count = require('number-to-words');
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 const languages = [
   {
-    name: "Python",
-    extension: ".py",
+    name: 'Python',
+    extension: '.py',
   },
   {
-    name: "CPP",
-    extension: ".cpp",
+    name: 'CPP',
+    extension: '.cpp',
   },
   {
-    name: "JavaScript",
-    extension: ".js",
+    name: 'JavaScript',
+    extension: '.js',
   },
   {
-    name: "Java",
-    extension: ".java",
+    name: 'Java',
+    extension: '.java',
   },
   {
-    name: "C",
-    extension: ".c",
+    name: 'C',
+    extension: '.c',
   },
   {
-    name: "SQL",
-    extension: ".sql",
+    name: 'SQL',
+    extension: '.sql',
   },
 ];
 
@@ -40,16 +40,16 @@ const args = process.argv.slice(2);
 // create folder with problem number
 // create files with the given languages with the given extensions
 
-const problem = args[0].split("=")[1];
-const solutions = args[1].split("=")[1];
-const extensions = args[2].split("=")[1].split(",");
-const remove = args[3] ? args[3].split("=")[1] : false;
-const refactor = args[4] ? args[4].split("=")[1] === "true" : false;
+const problem = args[0].split('=')[1];
+const solutions = args[1].split('=')[1];
+const extensions = args[2].split('=')[1].split(',');
+const remove = args[3] ? args[3].split('=')[1] : false;
+const refactor = args[4] ? args[4].split('=')[1] === 'true' : false;
 
 if (refactor) {
   if (!fs.existsSync(folderPath)) {
     console.log(
-      "Problem folder does not exist. Continuing the process like normal."
+      'Problem folder does not exist. Continuing the process like normal.'
     );
   } else {
     const files = fs.readdirSync(folderPath);
@@ -84,7 +84,7 @@ if (refactor) {
         for (let i = 1; i <= solutions; i++) {
           const fileName = `${returnNum(i)}${extension}`;
           const filePath = path.join(langFolder, fileName);
-          fs.writeFileSync(filePath, "");
+          fs.writeFileSync(filePath, '');
         }
       });
     }
@@ -92,15 +92,19 @@ if (refactor) {
   process.exit(0);
 }
 
+// if problem is a number of not length 4
+if (problem.length !== 4 && !isNaN(problem)) {
+  problem = problem.padStart(4, '0');
+}
 if (!/^[0-9]{4}$/.test(problem)) {
-  console.log("Invalid problem number");
+  console.log('Invalid problem number');
   error = true;
   return;
 }
 
 // check validty of solutions
 if (!/^[0-9]+$/.test(solutions)) {
-  console.log("Invalid number of solutions");
+  console.log('Invalid number of solutions');
   error = true;
   return;
 }
@@ -109,7 +113,7 @@ if (!/^[0-9]+$/.test(solutions)) {
 const validExtensions = languages.map((lang) => lang.extension);
 for (let extension of extensions) {
   if (!validExtensions.includes(extension)) {
-    console.log("Invalid extension");
+    console.log('Invalid extension');
     error = true;
     return;
   }
@@ -125,7 +129,7 @@ if (!fs.existsSync(folderPath)) {
     fs.rmdirSync(folderPath, { recursive: true });
     fs.mkdirSync(folderPath);
   } else {
-    console.log("Folder already exists");
+    console.log('Folder already exists');
     error = true;
     return;
   }
@@ -135,16 +139,16 @@ if (!fs.existsSync(folderPath)) {
 function returnNum(i) {
   return count
     .toWords(i)
-    .split(" ")
+    .split(' ')
     .map((item) => item.charAt(0).toUpperCase() + item.slice(1))
-    .join("");
+    .join('');
 }
 try {
   if (extensions.length === 1) {
     for (let i = 1; i <= solutions; i++) {
       const fileName = `${returnNum(i)}${extensions[0]}`;
       const filePath = path.join(folderPath, fileName);
-      fs.writeFileSync(filePath, "");
+      fs.writeFileSync(filePath, '');
     }
   } else {
     for (let lang of languages) {
@@ -157,7 +161,7 @@ try {
           // to camel
           const fileName = `${returnNum(i)}${lang.extension}`;
           const filePath = path.join(langFolder, fileName);
-          fs.writeFileSync(filePath, "");
+          fs.writeFileSync(filePath, '');
         }
       }
     }
@@ -173,31 +177,31 @@ async function fetchProblemStatement(problemNumber) {
     const searchUrl = `https://www.google.com/search?q=leetcode+${problemNumber}`;
     const { data } = await axios.get(searchUrl, {
       headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
       },
     });
     const $ = cheerio.load(data);
-    const firstLink = $("a")
-      .filter((i, el) => $(el).attr("href").includes("leetcode.com/problems"))
+    const firstLink = $('a')
+      .filter((i, el) => $(el).attr('href').includes('leetcode.com/problems'))
       .first()
-      .attr("href");
-    if (!firstLink) throw new Error("Problem link not found");
+      .attr('href');
+    if (!firstLink) throw new Error('Problem link not found');
 
-    const problemUrl = firstLink.startsWith("http")
+    const problemUrl = firstLink.startsWith('http')
       ? firstLink
       : `https://www.google.com${firstLink}`;
     const { data: problemData } = await axios.get(problemUrl, {
       headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
       },
     });
     const $$ = cheerio.load(problemData);
     const problemStatement = $$("[data-track-load='description-content']")
       .text()
       .trim();
-    if (!problemStatement) throw new Error("Problem statement not found");
+    if (!problemStatement) throw new Error('Problem statement not found');
 
     return problemStatement;
   } catch (error) {
@@ -206,12 +210,12 @@ async function fetchProblemStatement(problemNumber) {
 }
 
 (async () => {
-  const readmePath = path.join(folderPath, "README.md");
+  const readmePath = path.join(folderPath, 'README.md');
   const problemStatement = await fetchProblemStatement(problem);
   if (problemStatement) {
     fs.writeFileSync(readmePath, problemStatement);
   } else {
-    fs.writeFileSync(readmePath, "Problem statement not found.");
+    fs.writeFileSync(readmePath, 'Problem statement not found.');
   }
-  console.log("Folder created successfully");
+  console.log('Folder created successfully');
 })();
