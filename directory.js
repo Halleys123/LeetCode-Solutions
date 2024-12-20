@@ -40,7 +40,7 @@ const args = process.argv.slice(2);
 // create folder with problem number
 // create files with the given languages with the given extensions
 
-const problem = args[0].split('=')[1];
+let problem = args[0].split('=')[1];
 const solutions = args[1].split('=')[1];
 const extensions = args[2].split('=')[1].split(',');
 const remove = args[3] ? args[3].split('=')[1] : false;
