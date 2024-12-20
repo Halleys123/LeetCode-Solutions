@@ -17,3 +17,10 @@ public:
         return n == 1;
     }
 };
+
+int main()
+{
+    Solution s;
+    cout << s.isUgly(6) << endl;
+    return 0;
+}
