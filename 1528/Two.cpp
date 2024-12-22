@@ -23,3 +23,11 @@ public:
         return s;
     }
 };
+
+int main()
+{
+    Solution s;
+    vector<int> indices = {4, 5, 6, 7, 0, 2, 1, 3};
+    cout << s.restoreString("codeleet", indices) << endl;
+    return 0;
+}
