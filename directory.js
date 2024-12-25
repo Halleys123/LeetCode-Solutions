@@ -1,6 +1,6 @@
 // Sample command
 //node .\directory.js PROBLEM=1528 SOLUTIONS=5 LANGUAGES=.py,.cpp REMOVE=true REFACTOR=true
-//node .\directory.js PROBLEM=1528 SOLUTIONS=2 LANGUAGES=.cpp
+//node .\directory.js PROBLEM=1979 SOLUTIONS=2 LANGUAGES=.cpp
 const path = require('path');
 const fs = require('fs');
 const count = require('number-to-words');
