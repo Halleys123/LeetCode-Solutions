@@ -15,3 +15,11 @@ public:
         return gcd(minNum, maxNum);
     }
 };
+
+int main()
+{
+    Solution s;
+    vector<int> nums = {2, 5, 6, 9, 10};
+    cout << s.findGCD(nums) << endl;
+    return 0;
+}
